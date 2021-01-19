@@ -3,4 +3,4 @@ Password_security_assessment
 
 
 ## 시스템 개발 구성도
-![EOG Blink](./images/EOG.png)
+![system process](./images/process.jpg)
