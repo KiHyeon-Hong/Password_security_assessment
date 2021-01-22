@@ -32,4 +32,4 @@
 
 ### tensorflow.js
 - https://opentutorials.org/course/4628
-- 
+- https://www.npmjs.com/package/@tensorflow/tfjs
