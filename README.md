@@ -29,3 +29,7 @@
 
 ### 10k-most-password
 - https://github.com/iryndin/10K-Most-Popular-Passwords
+
+### tensorflow.js
+- https://opentutorials.org/course/4628
+- 

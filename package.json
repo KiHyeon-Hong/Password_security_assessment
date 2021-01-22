@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tensorflow/tfjs": "^2.8.5",
     "inko": "^1.1.1",
     "zxcvbn": "^4.4.2"
   }
