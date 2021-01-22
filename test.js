@@ -1,6 +1,7 @@
 const levenshteinDistance = require('./modules/levenshteinDistance.js');
 const inko = require('./modules/inko.js');
 const zxcvbn = require('./modules/zxcvbn.js');
+const ludsPoint = require('./modules/ludsPoint.js');
 
 
 //var orig = 'Th1$1$$tupld';
@@ -13,4 +14,5 @@ const zxcvbn = require('./modules/zxcvbn.js');
 //console.log('========================================');
 //console.log(zxcvbn.zxcvbnPoint('password1234!!'));
 
-inko.koToEn();
+//inko.koToEn();
+
