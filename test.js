@@ -13,3 +13,4 @@ const zxcvbn = require('./modules/zxcvbn.js');
 //console.log('========================================');
 //console.log(zxcvbn.zxcvbnPoint('password1234!!'));
 
+inko.koToEn();
