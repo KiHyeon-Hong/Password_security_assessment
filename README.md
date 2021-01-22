@@ -22,3 +22,10 @@
 
 ### 한타를 영타로 바꿔주는 모듈
 - https://github.com/738/inko
+
+
+### chromedriver download
+- https://chromedriver.chromium.org/downloads
+
+### 10k-most-password
+- https://github.com/iryndin/10K-Most-Popular-Passwords
