@@ -12,7 +12,7 @@ const ludsPoint = require('./modules/ludsPoint.js');
 //console.log(inko.toEnglish('소ㅑㄴ ㅑㄴ ㅅㄷㄴㅅ ㅡㄷㄴㄴㅁㅎㄷ!'));
 //console.log(inko.toKorean('dlrjtdms xptmxm aptlwl dlqslek!'));
 //console.log('========================================');
-//console.log(zxcvbn.zxcvbnPoint('password1234!!'));
+console.log(zxcvbn.zxcvbnPoint('password1234!!'));
 
 //inko.koToEn();
 
