@@ -37,4 +37,5 @@ var result = zxcvbn.zxcvbnPoint('password1234!!');
 
 //inko.koToEn();
 
-console.log(levenshteinDistance.totalLevenshteinDistance('todrkrgkek'));
+// console.log(levenshteinDistance.totalLevenshteinDistance('todrkrgkek'));
+
