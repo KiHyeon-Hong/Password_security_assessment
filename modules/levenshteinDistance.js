@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const levenshteinDistance = (orig, comp) => {
     /*
     if (!orig.length) return comp.length;
@@ -41,6 +43,23 @@ const levenshteinDistance = (orig, comp) => {
    return matrix[comp.length][orig.length];
 }
 
+const totalLevenshteinDistance = (text) => {
+    var dict = fs.readFileSync(__dirname + '/../files/koreanWordEn.txt', 'utf-8');
+    dict = dict.split('\n');
+
+    var min = text.length;
+    var temp = 0;
+
+    for(let i = 0; i < dict.length; i++) {
+       temp = levenshteinDistance(text, dict[i]);
+       if(min > temp) {
+           min = temp;
+       }
+    }
+
+    return min;
+}
+
 /*
 
 https://github.com/dumb-password-rules/dumb-password-rules
@@ -81,3 +100,4 @@ exports.getEditDistance = function(a, b){
 */
 
 exports.levenshteinDistance = levenshteinDistance;
+exports.totalLevenshteinDistance = totalLevenshteinDistance;

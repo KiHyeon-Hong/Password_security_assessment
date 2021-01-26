@@ -19,21 +19,22 @@ const ludsPoint = require('./modules/ludsPoint.js');
 var result = zxcvbn.zxcvbnPoint('password1234!!');
 
 //console.log(result.score);
-console.log(result.guesses);
-console.log('========================================');
-console.log(result.guesses_log10);
-console.log('========================================');
-console.log(result.crack_times_seconds);
-console.log('========================================');
-console.log(result.crack_times_display);
-console.log('========================================');
-console.log(result.score);
-console.log('========================================');
-console.log(result.sequence);
-console.log('========================================');
-console.log(result.calc_time);
-console.log('========================================');
+// console.log(result.guesses);
+// console.log('========================================');
+// console.log(result.guesses_log10);
+// console.log('========================================');
+// console.log(result.crack_times_seconds);
+// console.log('========================================');
+// console.log(result.crack_times_display);
+// console.log('========================================');
+// console.log(result.score);
+// console.log('========================================');
+// console.log(result.sequence);
+// console.log('========================================');
+// console.log(result.calc_time);
+// console.log('========================================');
 
 
 //inko.koToEn();
 
+console.log(levenshteinDistance.totalLevenshteinDistance('todrkrgkek'));
