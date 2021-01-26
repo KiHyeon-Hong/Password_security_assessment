@@ -20,7 +20,7 @@
 - https://www.security.org/how-secure-is-my-password/
 - https://password.kaspersky.com/
 
-### 한타를 영타로 바꿔주는 모듈
+### 한타를 영타로 바꿔주는 모듈(inko)
 - https://github.com/738/inko
 
 
