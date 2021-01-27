@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "@tensorflow/tfjs": "^2.8.5",
+    "@tensorflow/tfjs-vis": "^1.4.3",
     "inko": "^1.1.1",
     "zxcvbn": "^4.4.2"
   }
