@@ -35,3 +35,6 @@
 - https://www.npmjs.com/package/@tensorflow/tfjs
 - https://www.npmjs.com/package/@tensorflow/tfjs-vis
 - https://www.tensorflow.org/?hl=ko
+
+### password data
+- https://haveibeenpwned.com/PwnedWebsites
