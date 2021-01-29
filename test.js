@@ -15,8 +15,6 @@ const ludsPoint = require('./modules/ludsPoint.js');
 //console.log(zxcvbn.zxcvbnPoint('password1234!!'));
 //console.log('========================================');
 
-var result = zxcvbn.zxcvbnPoint('password1234!!');
-
 //console.log(result.score);
 // console.log(result.guesses);
 // console.log('========================================');
@@ -38,3 +36,6 @@ var result = zxcvbn.zxcvbnPoint('password1234!!');
 
 // console.log(levenshteinDistance.totalLevenshteinDistance('todrkrgkek'));
 
+
+var result = zxcvbn.zxcvbnPoint('password');
+console.log(result.score)
