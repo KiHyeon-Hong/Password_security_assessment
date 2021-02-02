@@ -1,6 +1,10 @@
 const ludsPoint = (text) => {
-    // node 정규화 공부 필수
+    // javascript 정규화 공부 필수
+
+    
 }
+
+exports.ludsPoint = ludsPoint;
 
 //http://www.passwordmeter.com/
 
@@ -23,3 +27,4 @@ const ludsPoint = (text) => {
     Sequential Numbers (3+) : 연속된 패턴이 3개이상 지속됨, -(n*3)
     Sequential Symbols (3+) : 연속된 패턴이 3개이상 지속됨(키보드상에서 연속), -(n*3)
 */
+
