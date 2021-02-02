@@ -1,5 +1,5 @@
 const ludsPoint = (text) => {
-    
+    // node 정규화 공부 필수
 }
 
 //http://www.passwordmeter.com/
