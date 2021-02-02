@@ -154,7 +154,7 @@ const ludsPoint = (pwd) => {
         // $("nLengthBonus").innerHTML = "+ " + nScore; 
 
         results[0] = nScore;
-        console.log('0 : ' + nScore);
+        // console.log('0 : ' + nScore);
         json.nLength = nScore;
 
 
@@ -163,7 +163,7 @@ const ludsPoint = (pwd) => {
             sAlphaUC = "+ " + parseInt((nLength - nAlphaUC) * 2);
 
             results[1] = parseInt((nLength - nAlphaUC) * 2);
-            console.log('1 : ' + parseInt((nLength - nAlphaUC) * 2));
+            // console.log('1 : ' + parseInt((nLength - nAlphaUC) * 2));
             json.nAlphaUC = parseInt((nLength - nAlphaUC) * 2);
 		}
 		if (nAlphaLC > 0 && nAlphaLC < nLength) {	
@@ -171,7 +171,7 @@ const ludsPoint = (pwd) => {
             sAlphaLC = "+ " + parseInt((nLength - nAlphaLC) * 2);
 
             results[2] = parseInt((nLength - nAlphaLC) * 2);
-            console.log('2 : ' + parseInt((nLength - nAlphaLC) * 2));
+            // console.log('2 : ' + parseInt((nLength - nAlphaLC) * 2));
             json.nAlphaLC = parseInt((nLength - nAlphaLC) * 2);
 		}
 		if (nNumber > 0 && nNumber < nLength) {	
@@ -179,7 +179,7 @@ const ludsPoint = (pwd) => {
             sNumber = "+ " + parseInt(nNumber * nMultNumber);
             
             results[3] = parseInt(nNumber * nMultNumber);
-            console.log('3 : ' + parseInt(nNumber * nMultNumber));
+            // console.log('3 : ' + parseInt(nNumber * nMultNumber));
             json.nNumber = parseInt(nNumber * nMultNumber);
 		}
 		if (nSymbol > 0) {	
@@ -187,7 +187,7 @@ const ludsPoint = (pwd) => {
             sSymbol = "+ " + parseInt(nSymbol * nMultSymbol);
             
             results[4] = parseInt(nSymbol * nMultSymbol);
-            console.log('4 : ' + parseInt(nSymbol * nMultSymbol));
+            // console.log('4 : ' + parseInt(nSymbol * nMultSymbol));
             json.nSymbol = parseInt(nSymbol * nMultSymbol);
 
 		}
@@ -195,7 +195,7 @@ const ludsPoint = (pwd) => {
 			nScore = parseInt(nScore + (nMidChar * nMultMidChar));
             sMidChar = "+ " + parseInt(nMidChar * nMultMidChar);
             
-            console.log('5 : ' + parseInt(nMidChar * nMultMidChar));
+            // console.log('5 : ' + parseInt(nMidChar * nMultMidChar));
             json.nMidChar = parseInt(nMidChar * nMultMidChar);
 		}
 		// $("nAlphaUCBonus").innerHTML = sAlphaUC; 
@@ -210,7 +210,7 @@ const ludsPoint = (pwd) => {
 			nAlphasOnly = nLength;
             sAlphasOnly = "- " + nLength;
             
-            console.log('6 : ' + nLength);
+            // console.log('6 : ' + nLength);
             json.nAlphasOnly = nLength;
 		}
 		if (nAlphaLC === 0 && nAlphaUC === 0 && nSymbol === 0 && nNumber > 0) {  // Only Numbers
@@ -218,56 +218,56 @@ const ludsPoint = (pwd) => {
 			nNumbersOnly = nLength;
             sNumbersOnly = "- " + nLength;
             
-            console.log('7 : ' + nLength);
+            // console.log('7 : ' + nLength);
             json.nNumbersOnly = nLength;
 		}
 		if (nRepChar > 0) {  // Same character exists more than once
 			nScore = parseInt(nScore - nRepInc);
             sRepChar = "- " + nRepInc;
             
-            console.log('8 : ' + nRepInc);
+            // console.log('8 : ' + nRepInc);
             json.nRepChar = nRepInc;
 		}
 		if (nConsecAlphaUC > 0) {  // Consecutive Uppercase Letters exist
 			nScore = parseInt(nScore - (nConsecAlphaUC * nMultConsecAlphaUC)); 
             sConsecAlphaUC = "- " + parseInt(nConsecAlphaUC * nMultConsecAlphaUC);
             
-            console.log('8 : ' + parseInt(nConsecAlphaUC * nMultConsecAlphaUC));
+            // console.log('8 : ' + parseInt(nConsecAlphaUC * nMultConsecAlphaUC));
             json.nConsecAlphaUC = parseInt(nConsecAlphaUC * nMultConsecAlphaUC);
 		}
 		if (nConsecAlphaLC > 0) {  // Consecutive Lowercase Letters exist
 			nScore = parseInt(nScore - (nConsecAlphaLC * nMultConsecAlphaLC)); 
             sConsecAlphaLC = "- " + parseInt(nConsecAlphaLC * nMultConsecAlphaLC);
             
-            console.log('9 : ' + parseInt(nConsecAlphaLC * nMultConsecAlphaLC));
+            // console.log('9 : ' + parseInt(nConsecAlphaLC * nMultConsecAlphaLC));
             json.nConsecAlphaLC = parseInt(nConsecAlphaLC * nMultConsecAlphaLC);
 		}
 		if (nConsecNumber > 0) {  // Consecutive Numbers exist
 			nScore = parseInt(nScore - (nConsecNumber * nMultConsecNumber));  
             sConsecNumber = "- " + parseInt(nConsecNumber * nMultConsecNumber);
             
-            console.log('10 : ' + parseInt(nConsecNumber * nMultConsecNumber));
+            // console.log('10 : ' + parseInt(nConsecNumber * nMultConsecNumber));
             json.nConsecNumber = parseInt(nConsecNumber * nMultConsecNumber);
 		}
 		if (nSeqAlpha > 0) {  // Sequential alpha strings exist (3 characters or more)
 			nScore = parseInt(nScore - (nSeqAlpha * nMultSeqAlpha)); 
             sSeqAlpha = "- " + parseInt(nSeqAlpha * nMultSeqAlpha);
             
-            console.log('11 : ' + parseInt(nSeqAlpha * nMultSeqAlpha));
+            // console.log('11 : ' + parseInt(nSeqAlpha * nMultSeqAlpha));
             json.nSeqAlpha = parseInt(nSeqAlpha * nMultSeqAlpha);
 		}
 		if (nSeqNumber > 0) {  // Sequential numeric strings exist (3 characters or more)
 			nScore = parseInt(nScore - (nSeqNumber * nMultSeqNumber)); 
             sSeqNumber = "- " + parseInt(nSeqNumber * nMultSeqNumber);
             
-            console.log('11 : ' + parseInt(nSeqNumber * nMultSeqNumber));
+            // console.log('11 : ' + parseInt(nSeqNumber * nMultSeqNumber));
             json.nSeqNumber = parseInt(nSeqNumber * nMultSeqNumber);
 		}
 		if (nSeqSymbol > 0) {  // Sequential symbol strings exist (3 characters or more)
 			nScore = parseInt(nScore - (nSeqSymbol * nMultSeqSymbol)); 
             sSeqSymbol = "- " + parseInt(nSeqSymbol * nMultSeqSymbol);
             
-            console.log('11 : ' + parseInt(nSeqSymbol * nMultSeqSymbol));
+            // console.log('11 : ' + parseInt(nSeqSymbol * nMultSeqSymbol));
             json.nSeqSymbol = parseInt(nSeqSymbol * nMultSeqSymbol);
 		}
 		// $("nAlphasOnlyBonus").innerHTML = sAlphasOnly; 
@@ -325,7 +325,7 @@ const ludsPoint = (pwd) => {
 		}
         // $("nRequirementsBonus").innerHTML = sRequirements;
 
-        console.log('??? : ' + sRequirements.replace('+', '').replace(' ', ''));
+        // console.log('??? : ' + sRequirements.replace('+', '').replace(' ', ''));
         json.nRequirements = sRequirements.replace('+', '').replace(' ', '');
 
 		/* Determine if additional bonuses need to be applied and set image indicators accordingly */
@@ -375,10 +375,10 @@ const ludsPoint = (pwd) => {
 		oScore.innerHTML = nScore + "%";
 		oComplexity.innerHTML = sComplexity;
     }
-    console.log('nScore : ' + nScore);
+    // console.log('nScore : ' + nScore);
     json.nScore = nScore;
 
-    console.log('sComplexity : ' + sComplexity);
+    // console.log('sComplexity : ' + sComplexity);
     json.sComplexity = sComplexity;
 
     return json;
