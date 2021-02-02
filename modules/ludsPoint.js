@@ -49,7 +49,8 @@ function addLoadEvent(func) {
 
 
 const ludsPoint = (pwd) => {
-    var score = [];
+    var results = [];
+    var json = {}; 
 
 
     // javascript 정규화 공부 필수
@@ -151,36 +152,51 @@ const ludsPoint = (pwd) => {
 
 		/* General point assignment */
         // $("nLengthBonus").innerHTML = "+ " + nScore; 
+
+        results[0] = nScore;
         console.log('0 : ' + nScore);
+        json.nLength = nScore;
+
+
 		if (nAlphaUC > 0 && nAlphaUC < nLength) {	
 			nScore = parseInt(nScore + ((nLength - nAlphaUC) * 2));
             sAlphaUC = "+ " + parseInt((nLength - nAlphaUC) * 2);
 
+            results[1] = parseInt((nLength - nAlphaUC) * 2);
             console.log('1 : ' + parseInt((nLength - nAlphaUC) * 2));
+            json.nAlphaUC = parseInt((nLength - nAlphaUC) * 2);
 		}
 		if (nAlphaLC > 0 && nAlphaLC < nLength) {	
 			nScore = parseInt(nScore + ((nLength - nAlphaLC) * 2)); 
             sAlphaLC = "+ " + parseInt((nLength - nAlphaLC) * 2);
 
+            results[2] = parseInt((nLength - nAlphaLC) * 2);
             console.log('2 : ' + parseInt((nLength - nAlphaLC) * 2));
+            json.nAlphaLC = parseInt((nLength - nAlphaLC) * 2);
 		}
 		if (nNumber > 0 && nNumber < nLength) {	
 			nScore = parseInt(nScore + (nNumber * nMultNumber));
             sNumber = "+ " + parseInt(nNumber * nMultNumber);
             
+            results[3] = parseInt(nNumber * nMultNumber);
             console.log('3 : ' + parseInt(nNumber * nMultNumber));
+            json.nNumber = parseInt(nNumber * nMultNumber);
 		}
 		if (nSymbol > 0) {	
 			nScore = parseInt(nScore + (nSymbol * nMultSymbol));
             sSymbol = "+ " + parseInt(nSymbol * nMultSymbol);
             
+            results[4] = parseInt(nSymbol * nMultSymbol);
             console.log('4 : ' + parseInt(nSymbol * nMultSymbol));
+            json.nSymbol = parseInt(nSymbol * nMultSymbol);
+
 		}
 		if (nMidChar > 0) {	
 			nScore = parseInt(nScore + (nMidChar * nMultMidChar));
             sMidChar = "+ " + parseInt(nMidChar * nMultMidChar);
             
             console.log('5 : ' + parseInt(nMidChar * nMultMidChar));
+            json.nMidChar = parseInt(nMidChar * nMultMidChar);
 		}
 		// $("nAlphaUCBonus").innerHTML = sAlphaUC; 
 		// $("nAlphaLCBonus").innerHTML = sAlphaLC;
@@ -195,6 +211,7 @@ const ludsPoint = (pwd) => {
             sAlphasOnly = "- " + nLength;
             
             console.log('6 : ' + nLength);
+            json.nAlphasOnly = nLength;
 		}
 		if (nAlphaLC === 0 && nAlphaUC === 0 && nSymbol === 0 && nNumber > 0) {  // Only Numbers
 			nScore = parseInt(nScore - nLength); 
@@ -202,48 +219,56 @@ const ludsPoint = (pwd) => {
             sNumbersOnly = "- " + nLength;
             
             console.log('7 : ' + nLength);
+            json.nNumbersOnly = nLength;
 		}
 		if (nRepChar > 0) {  // Same character exists more than once
 			nScore = parseInt(nScore - nRepInc);
             sRepChar = "- " + nRepInc;
             
             console.log('8 : ' + nRepInc);
+            json.nRepChar = nRepInc;
 		}
 		if (nConsecAlphaUC > 0) {  // Consecutive Uppercase Letters exist
 			nScore = parseInt(nScore - (nConsecAlphaUC * nMultConsecAlphaUC)); 
             sConsecAlphaUC = "- " + parseInt(nConsecAlphaUC * nMultConsecAlphaUC);
             
             console.log('8 : ' + parseInt(nConsecAlphaUC * nMultConsecAlphaUC));
+            json.nConsecAlphaUC = parseInt(nConsecAlphaUC * nMultConsecAlphaUC);
 		}
 		if (nConsecAlphaLC > 0) {  // Consecutive Lowercase Letters exist
 			nScore = parseInt(nScore - (nConsecAlphaLC * nMultConsecAlphaLC)); 
             sConsecAlphaLC = "- " + parseInt(nConsecAlphaLC * nMultConsecAlphaLC);
             
             console.log('9 : ' + parseInt(nConsecAlphaLC * nMultConsecAlphaLC));
+            json.nConsecAlphaLC = parseInt(nConsecAlphaLC * nMultConsecAlphaLC);
 		}
 		if (nConsecNumber > 0) {  // Consecutive Numbers exist
 			nScore = parseInt(nScore - (nConsecNumber * nMultConsecNumber));  
             sConsecNumber = "- " + parseInt(nConsecNumber * nMultConsecNumber);
             
             console.log('10 : ' + parseInt(nConsecNumber * nMultConsecNumber));
+            json.nConsecNumber = parseInt(nConsecNumber * nMultConsecNumber);
 		}
 		if (nSeqAlpha > 0) {  // Sequential alpha strings exist (3 characters or more)
 			nScore = parseInt(nScore - (nSeqAlpha * nMultSeqAlpha)); 
             sSeqAlpha = "- " + parseInt(nSeqAlpha * nMultSeqAlpha);
             
             console.log('11 : ' + parseInt(nSeqAlpha * nMultSeqAlpha));
+            json.nSeqAlpha = parseInt(nSeqAlpha * nMultSeqAlpha);
 		}
 		if (nSeqNumber > 0) {  // Sequential numeric strings exist (3 characters or more)
 			nScore = parseInt(nScore - (nSeqNumber * nMultSeqNumber)); 
             sSeqNumber = "- " + parseInt(nSeqNumber * nMultSeqNumber);
             
             console.log('11 : ' + parseInt(nSeqNumber * nMultSeqNumber));
+            json.nSeqNumber = parseInt(nSeqNumber * nMultSeqNumber);
 		}
 		if (nSeqSymbol > 0) {  // Sequential symbol strings exist (3 characters or more)
 			nScore = parseInt(nScore - (nSeqSymbol * nMultSeqSymbol)); 
             sSeqSymbol = "- " + parseInt(nSeqSymbol * nMultSeqSymbol);
             
             console.log('11 : ' + parseInt(nSeqSymbol * nMultSeqSymbol));
+            json.nSeqSymbol = parseInt(nSeqSymbol * nMultSeqSymbol);
 		}
 		// $("nAlphasOnlyBonus").innerHTML = sAlphasOnly; 
 		// $("nNumbersOnlyBonus").innerHTML = sNumbersOnly; 
@@ -267,14 +292,41 @@ const ludsPoint = (pwd) => {
 		// 	if (arrChars[c] == parseInt(minVal + 1)) { nReqChar++; oImg.className = "pass"; oBonus.parentNode.className = "pass"; }
 		// 	else if (arrChars[c] > parseInt(minVal + 1)) { nReqChar++; oImg.className = "exceed"; oBonus.parentNode.className = "exceed"; }
 		// 	else { oImg.className = "fail"; oBonus.parentNode.className = "fail"; }
-		// }
-		nRequirements = nReqChar;
+        // }
+
+        for (var c=0; c < arrCharsLen; c++) {
+            if (arrCharsIds[c] == "nLength") {
+                var minVal = parseInt(nMinPwdLen - 1);
+            }
+            else {
+                var minVal = 0;
+            }
+    
+            if (arrChars[c] == parseInt(minVal + 1)) {
+                nReqChar++;
+
+            }
+            else if (arrChars[c] > parseInt(minVal + 1)) {
+                nReqChar++;
+
+            }
+            else {
+
+            }    
+        }
+    
+        
+        nRequirements = nReqChar;
+        
 		if (pwd.length >= nMinPwdLen) { var nMinReqChars = 3; } else { var nMinReqChars = 4; }
 		if (nRequirements > nMinReqChars) {  // One or more required characters exist
 			nScore = parseInt(nScore + (nRequirements * 2)); 
 			sRequirements = "+ " + parseInt(nRequirements * 2);
 		}
-		// $("nRequirementsBonus").innerHTML = sRequirements;
+        // $("nRequirementsBonus").innerHTML = sRequirements;
+
+        console.log('??? : ' + sRequirements.replace('+', '').replace(' ', ''));
+        json.nRequirements = sRequirements.replace('+', '').replace(' ', '');
 
 		/* Determine if additional bonuses need to be applied and set image indicators accordingly */
 		var arrChars = [nMidChar,nRequirements];
@@ -324,9 +376,12 @@ const ludsPoint = (pwd) => {
 		oComplexity.innerHTML = sComplexity;
     }
     console.log('nScore : ' + nScore);
+    json.nScore = nScore;
+
     console.log('sComplexity : ' + sComplexity);
+    json.sComplexity = sComplexity;
 
-
+    return json;
 }
 
 exports.ludsPoint = ludsPoint;
