@@ -326,7 +326,7 @@ const ludsPoint = (pwd) => {
         // $("nRequirementsBonus").innerHTML = sRequirements;
 
         // console.log('??? : ' + sRequirements.replace('+', '').replace(' ', ''));
-        json.nRequirements = sRequirements.replace('+', '').replace(' ', '');
+        json.nRequirements = parseInt(sRequirements.replace('+', '').replace(' ', ''));
 
 		/* Determine if additional bonuses need to be applied and set image indicators accordingly */
 		var arrChars = [nMidChar,nRequirements];
