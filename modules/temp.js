@@ -4,6 +4,8 @@ String.prototype.strReverse = function() {
 		newstring = this.charAt(s) + newstring;
 	}
 	return newstring;
+	//strOrig = ' texttotrim ';
+	//strReversed = strOrig.revstring();
 };
 
 function initPwdChk(restart) {
@@ -50,6 +52,14 @@ const ludsPoint = (pwd) => {
     var results = [];
     var json = {}; 
 
+
+    // javascript 정규화 공부 필수
+
+    // var oScorebar = $("scorebar");
+	// var oScore = $("score");
+	// var oComplexity = $("complexity");
+	// Simultaneous variable declaration and value assignment aren't supported in IE apparently
+	// so I'm forced to assign the same value individually per var to support a crappy browser *sigh* 
 	var nScore=0, nLength=0, nAlphaUC=0, nAlphaLC=0, nNumber=0, nSymbol=0, nMidChar=0, nRequirements=0, nAlphasOnly=0, nNumbersOnly=0, nUnqChar=0, nRepChar=0, nRepInc=0, nConsecAlphaUC=0, nConsecAlphaLC=0, nConsecNumber=0, nConsecSymbol=0, nConsecCharType=0, nSeqAlpha=0, nSeqNumber=0, nSeqSymbol=0, nSeqChar=0, nReqChar=0, nMultConsecCharType=0;
 	var nMultRepChar=1, nMultConsecSymbol=1;
 	var nMultMidChar=2, nMultRequirements=2, nMultConsecAlphaUC=2, nMultConsecAlphaLC=2, nMultConsecNumber=2;
@@ -64,13 +74,14 @@ const ludsPoint = (pwd) => {
 	var sComplexity = "Too Short";
 	var sStandards = "Below";
 	var nMinPwdLen = 8;
-
+	// if (document.all) { var nd = 0; } else { var nd = 1; }
 	if (pwd) {
 		nScore = parseInt(pwd.length * nMultLength);
 		nLength = pwd.length;
 		var arrPwd = pwd.replace(/\s+/g,"").split(/\s*/);
 		var arrPwdLen = arrPwd.length;
-
+		
+		/* Loop through password to check for Symbol, Numeric, Lowercase and Uppercase pattern matches */
 		for (var a=0; a < arrPwdLen; a++) {
 			if (arrPwd[a].match(/[A-Z]/g)) {
 				if (nTmpAlphaUC !== "") { if ((nTmpAlphaUC + 1) == a) { nConsecAlphaUC++; nConsecCharType++; } }
@@ -94,11 +105,17 @@ const ludsPoint = (pwd) => {
 				nTmpSymbol = a;
 				nSymbol++;
 			}
+			/* Internal loop through password to check for repeat characters */
 			var bCharExists = false;
 			for (var b=0; b < arrPwdLen; b++) {
 				if (arrPwd[a] == arrPwd[b] && a != b) { /* repeat character exists */
 					bCharExists = true;
-
+					/* 
+					Calculate icrement deduction based on proximity to identical characters
+					Deduction is incremented each time a new match is discovered
+					Deduction amount is based on total password length divided by the
+					difference of distance between currently selected match
+					*/
 					nRepInc += Math.abs(arrPwdLen/(b-a));
 				}
 			}
@@ -109,6 +126,7 @@ const ludsPoint = (pwd) => {
 			}
 		}
 		
+		/* Check for sequential alpha string patterns (forward and reverse) */
 		for (var s=0; s < 23; s++) {
             var sFwd = sAlphas.substring(s,parseInt(s+3));
             var sRev = sFwd.strReverse();
@@ -116,17 +134,24 @@ const ludsPoint = (pwd) => {
 			if (pwd.toLowerCase().indexOf(sFwd) != -1 || pwd.toLowerCase().indexOf(sRev) != -1) { nSeqAlpha++; nSeqChar++;}
 		}
 		
+		/* Check for sequential numeric string patterns (forward and reverse) */
 		for (var s=0; s < 8; s++) {
 			var sFwd = sNumerics.substring(s,parseInt(s+3));
 			var sRev = sFwd.strReverse();
 			if (pwd.toLowerCase().indexOf(sFwd) != -1 || pwd.toLowerCase().indexOf(sRev) != -1) { nSeqNumber++; nSeqChar++;}
 		}
-
+		
+		/* Check for sequential symbol string patterns (forward and reverse) */
 		for (var s=0; s < 8; s++) {
 			var sFwd = sSymbols.substring(s,parseInt(s+3));
 			var sRev = sFwd.strReverse();
 			if (pwd.toLowerCase().indexOf(sFwd) != -1 || pwd.toLowerCase().indexOf(sRev) != -1) { nSeqSymbol++; nSeqChar++;}
 		}
+		
+	/* Modify overall score value based on usage vs requirements */
+
+		/* General point assignment */
+        // $("nLengthBonus").innerHTML = "+ " + nScore; 
 
         results[0] = nScore;
         // console.log('0 : ' + nScore);
@@ -173,7 +198,13 @@ const ludsPoint = (pwd) => {
             // console.log('5 : ' + parseInt(nMidChar * nMultMidChar));
             json.nMidChar = parseInt(nMidChar * nMultMidChar);
 		}
-
+		// $("nAlphaUCBonus").innerHTML = sAlphaUC; 
+		// $("nAlphaLCBonus").innerHTML = sAlphaLC;
+		// $("nNumberBonus").innerHTML = sNumber;
+		// $("nSymbolBonus").innerHTML = sSymbol;
+		// $("nMidCharBonus").innerHTML = sMidChar;
+		
+		/* Point deductions for poor practices */
 		if ((nAlphaLC > 0 || nAlphaUC > 0) && nSymbol === 0 && nNumber === 0) {  // Only Letters
 			nScore = parseInt(nScore - nLength);
 			nAlphasOnly = nLength;
@@ -190,7 +221,7 @@ const ludsPoint = (pwd) => {
             // console.log('7 : ' + nLength);
             json.nNumbersOnly = nLength;
 		}
-		if (nRepChar > 0) {
+		if (nRepChar > 0) {  // Same character exists more than once
 			nScore = parseInt(nScore - nRepInc);
             sRepChar = "- " + nRepInc;
             
@@ -239,10 +270,29 @@ const ludsPoint = (pwd) => {
             // console.log('11 : ' + parseInt(nSeqSymbol * nMultSeqSymbol));
             json.nSeqSymbol = parseInt(nSeqSymbol * nMultSeqSymbol);
 		}
+		// $("nAlphasOnlyBonus").innerHTML = sAlphasOnly; 
+		// $("nNumbersOnlyBonus").innerHTML = sNumbersOnly; 
+		// $("nRepCharBonus").innerHTML = sRepChar; 
+		// $("nConsecAlphaUCBonus").innerHTML = sConsecAlphaUC; 
+		// $("nConsecAlphaLCBonus").innerHTML = sConsecAlphaLC; 
+		// $("nConsecNumberBonus").innerHTML = sConsecNumber;
+		// $("nSeqAlphaBonus").innerHTML = sSeqAlpha; 
+		// $("nSeqNumberBonus").innerHTML = sSeqNumber;
+		// $("nSeqSymbolBonus").innerHTML = sSeqSymbol; 
 
+		/* Determine if mandatory requirements have been met and set image indicators accordingly */
 		var arrChars = [nLength,nAlphaUC,nAlphaLC,nNumber,nSymbol];
 		var arrCharsIds = ["nLength","nAlphaUC","nAlphaLC","nNumber","nSymbol"];
 		var arrCharsLen = arrChars.length;
+		// for (var c=0; c < arrCharsLen; c++) {
+		// 	var oImg = $('div_' + arrCharsIds[c]);
+		// 	var oBonus = $(arrCharsIds[c] + 'Bonus');
+		// 	$(arrCharsIds[c]).innerHTML = arrChars[c];
+		// 	if (arrCharsIds[c] == "nLength") { var minVal = parseInt(nMinPwdLen - 1); } else { var minVal = 0; }
+		// 	if (arrChars[c] == parseInt(minVal + 1)) { nReqChar++; oImg.className = "pass"; oBonus.parentNode.className = "pass"; }
+		// 	else if (arrChars[c] > parseInt(minVal + 1)) { nReqChar++; oImg.className = "exceed"; oBonus.parentNode.className = "exceed"; }
+		// 	else { oImg.className = "fail"; oBonus.parentNode.className = "fail"; }
+        // }
 
         for (var c=0; c < arrCharsLen; c++) {
             if (arrCharsIds[c] == "nLength") {
@@ -272,7 +322,8 @@ const ludsPoint = (pwd) => {
 		if (nRequirements > nMinReqChars) {  // One or more required characters exist
 			nScore = parseInt(nScore + (nRequirements * 2)); 
 			sRequirements = "+ " + parseInt(nRequirements * 2);
-		};
+		}
+        // $("nRequirementsBonus").innerHTML = sRequirements;
 
         // console.log('??? : ' + sRequirements.replace('+', '').replace(' ', ''));
         json.nRequirements = parseInt(sRequirements.replace('+', '').replace(' ', ''));
@@ -281,10 +332,29 @@ const ludsPoint = (pwd) => {
 		var arrChars = [nMidChar,nRequirements];
 		var arrCharsIds = ["nMidChar","nRequirements"];
 		var arrCharsLen = arrChars.length;
+		// for (var c=0; c < arrCharsLen; c++) {
+		// 	var oImg = $('div_' + arrCharsIds[c]);
+		// 	var oBonus = $(arrCharsIds[c] + 'Bonus');
+		// 	$(arrCharsIds[c]).innerHTML = arrChars[c];
+		// 	if (arrCharsIds[c] == "nRequirements") { var minVal = nMinReqChars; } else { var minVal = 0; }
+		// 	if (arrChars[c] == parseInt(minVal + 1)) { oImg.className = "pass"; oBonus.parentNode.className = "pass"; }
+		// 	else if (arrChars[c] > parseInt(minVal + 1)) { oImg.className = "exceed"; oBonus.parentNode.className = "exceed"; }
+		// 	else { oImg.className = "fail"; oBonus.parentNode.className = "fail"; }
+		// }
 
+		/* Determine if suggested requirements have been met and set image indicators accordingly */
 		var arrChars = [nAlphasOnly,nNumbersOnly,nRepChar,nConsecAlphaUC,nConsecAlphaLC,nConsecNumber,nSeqAlpha,nSeqNumber,nSeqSymbol];
 		var arrCharsIds = ["nAlphasOnly","nNumbersOnly","nRepChar","nConsecAlphaUC","nConsecAlphaLC","nConsecNumber","nSeqAlpha","nSeqNumber","nSeqSymbol"];
 		var arrCharsLen = arrChars.length;
+		// for (var c=0; c < arrCharsLen; c++) {
+		// 	var oImg = $('div_' + arrCharsIds[c]);
+		// 	var oBonus = $(arrCharsIds[c] + 'Bonus');
+		// 	$(arrCharsIds[c]).innerHTML = arrChars[c];
+		// 	if (arrChars[c] > 0) { oImg.className = "warn"; oBonus.parentNode.className = "warn"; }
+		// 	else { oImg.className = "pass"; oBonus.parentNode.className = "pass"; }
+		// }
+		
+        /* Determine complexity based on overall score */
         
         // 판단 기준
 		if (nScore > 100) { nScore = 100; } else if (nScore < 0) { nScore = 0; }
@@ -293,8 +363,14 @@ const ludsPoint = (pwd) => {
 		else if (nScore >= 40 && nScore < 60) { sComplexity = "Good"; }
 		else if (nScore >= 60 && nScore < 80) { sComplexity = "Strong"; }
 		else if (nScore >= 80 && nScore <= 100) { sComplexity = "Very Strong"; }
+		
+		/* Display updated score criteria to client */
+		// oScorebar.style.backgroundPosition = "-" + parseInt(nScore * 4) + "px";
+		// oScore.innerHTML = nScore + "%";
+		// oComplexity.innerHTML = sComplexity;
 	}
 	else {
+		/* Display default score criteria to client */
 		initPwdChk();
 		oScore.innerHTML = nScore + "%";
 		oComplexity.innerHTML = sComplexity;

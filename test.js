@@ -42,3 +42,6 @@ const ludsPoint = require('./modules/ludsPoint.js');
 
 // console.log('( ' + zxcvbn.zxcvbnPoint('password654321').score + ', ' + levenshteinDistance.totalLevenshteinDistance('password654321') + ' )');
 
+let json = ludsPoint.ludsPoint('password123654');
+
+console.log(json);
