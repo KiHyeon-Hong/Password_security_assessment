@@ -14,7 +14,7 @@ soup = BeautifulSoup(res.text, "lxml")
 
 data = soup.find("table", attrs={"class":"prettytable"}).text
 
-
+print(data)
 
 
 # fs = codecs.open(os.getcwd() + "/../files/koreanWord.txt", "w", "utf-8")
