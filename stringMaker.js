@@ -9,23 +9,30 @@
 7. 100,000개의 데이터 만들기
 */
 
+const fs = require('fs');
+
 // characterClass is Class(0: smallLetter, 1: capitalLEtter, 2: number, 3: specialChar)
 // characterNumber is length
 function randomString(characterClass, characterNumber, characterGroups) {
-    /*
-    var smallLetter = "abcdefghijklmnopqrstuvwxyz";
-    var capitalLetter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var number = "0123456789";
-    var specialChar = "!@#$%^&*()";
-    */
+    // var smallLetter = "abcdefghijklmnopqrstuvwxyz";
+    // var capitalLetter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    // var number = "0123456789";
+    // var specialChar = "!@#$%^&*()";
+
+    var wordDataFile = fs.readFileSync('./files/EngWord.txt', 'utf8');
+    var wordData = wordDataFile.split(',');
 
     var chars = ["abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "0123456789", "!@#$%^&*()"];
    
 	var randomstring = '';
 
     for(let i = 0; i < characterGroups; i++) {
-        if(characterClass[i] == 4 || characterClass[i] == 5) {
+        if(characterClass[i] == 4) {
 
+            randomstring += wordData[Math.floor(Math.random() * wordData.length)];
+        }
+        else if(characterClass[i] == 5) {
+            randomstring += wordData[Math.floor(Math.random() * wordData.length)].toUpperCase();
         }
         else {
             for(let j = 0; j < characterNumber[i]; j++) {
@@ -38,34 +45,34 @@ function randomString(characterClass, characterNumber, characterGroups) {
 	return randomstring;
 }
 
-var characterGroups = Math.floor(Math.random() * 10) + 1;
 
-var characterClass = [];
-var characterNumber = [];
+for(let i = 0; i < 100; i++) {
+    var characterGroups = Math.floor(Math.random() * 10) + 1;
 
-for(let count = 0; count < characterGroups; count++) {
-    characterClass[count] = Math.floor(Math.random() * 4);
-    characterNumber[count] = Math.floor(Math.random() * 10) + 1;
+    var characterClass = [];
+    var characterNumber = [];
 
-    if(characterClass[count] == 0) {
-        characterClass[count] = (Math.floor(Math.random() > 0.5))? 0 : 4;
+    for(let count = 0; count < characterGroups; count++) {
+        characterClass[count] = Math.floor(Math.random() * 4);
+        characterNumber[count] = Math.floor(Math.random() * 10) + 1;
+
+        if(characterClass[count] == 0) {
+            characterClass[count] = (Math.floor(Math.random() > 0.5))? 0 : 4;
+        }
+        else if(characterClass[count] == 1) {
+            characterClass[count] = (Math.floor(Math.random() > 0.5))? 1 : 5;
+        }
     }
-    else if(characterClass[count] == 1) {
-        characterClass[count] = (Math.floor(Math.random() > 0.5))? 1 : 5;
+
+
+    var originalPassword = randomString(characterClass, characterNumber, characterGroups);
+
+    var passwordLength = Math.floor(Math.random() * originalPassword.length) + 1;
+    var password = originalPassword.substring(0, passwordLength);
+
+    if(password.length >= 4 && password.length <= 21) {
+        // console.log(originalPassword);
+        console.log(password);
     }
 }
 
-
-var originalPassword = randomString(characterClass, characterNumber, characterGroups);
-
-/*
-var start = Math.floor(Math.random() * originalPassword.length);
-var passwordLength = Math.floor(Math.random() * chars[characterClass[i]].length);;
-var password = originalPassword.substring(start, start + passwordLength);
-*/
-
-var passwordLength = Math.floor(Math.random() * originalPassword.length) + 1;
-var password = originalPassword.substring(0, passwordLength);
-
-console.log(originalPassword);
-console.log(password);
