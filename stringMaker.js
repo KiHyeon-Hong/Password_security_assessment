@@ -11,6 +11,10 @@
 
 const fs = require('fs');
 
+function replaceIndex(data, index, character) {
+    return data.substr(0, index) + character + data.substr(index + character.length);
+}
+
 // characterClass is Class(0: smallLetter, 1: capitalLEtter, 2: number, 3: specialChar)
 // characterNumber is length
 function randomString(characterClass, characterNumber, characterGroups) {
@@ -28,11 +32,26 @@ function randomString(characterClass, characterNumber, characterGroups) {
 
     for(let i = 0; i < characterGroups; i++) {
         if(characterClass[i] == 4) {
+            var temp = wordData[Math.floor(Math.random() * wordData.length)];
 
-            randomstring += wordData[Math.floor(Math.random() * wordData.length)];
+            if(Math.floor(Math.random() > 0.5)) {
+                var rnum = Math.floor(Math.random() * chars[0].length);
+                temp = replaceIndex(temp, Math.floor(Math.random() * temp.length), chars[0].substring(rnum, rnum + 1));
+            }
+
+            randomstring += temp;
         }
         else if(characterClass[i] == 5) {
-            randomstring += wordData[Math.floor(Math.random() * wordData.length)].toUpperCase();
+            // randomstring += wordData[Math.floor(Math.random() * wordData.length)].toUpperCase();
+
+            var temp = wordData[Math.floor(Math.random() * wordData.length)];
+
+            if(Math.floor(Math.random() > 0.5)) {
+                var rnum = Math.floor(Math.random() * chars[1].length);
+                temp = replaceIndex(temp, Math.floor(Math.random() * temp.length), chars[1].substring(rnum, rnum + 1));
+            }
+
+            randomstring += temp.toUpperCase();
         }
         else {
             for(let j = 0; j < characterNumber[i]; j++) {
@@ -45,8 +64,9 @@ function randomString(characterClass, characterNumber, characterGroups) {
 	return randomstring;
 }
 
+fs.writeFileSync('./files/createPassword10.txt', '', 'utf8');
 
-for(let i = 0; i < 100; i++) {
+for(let i = 0; i < 100000; i++) {
     var characterGroups = Math.floor(Math.random() * 10) + 1;
 
     var characterClass = [];
@@ -72,7 +92,9 @@ for(let i = 0; i < 100; i++) {
 
     if(password.length >= 4 && password.length <= 21) {
         // console.log(originalPassword);
-        console.log(password);
+        // console.log(password);
+
+        fs.appendFileSync('./files/createPassword10.txt', password + '\n', 'utf8');
     }
 }
 
