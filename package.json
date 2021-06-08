@@ -1,0 +1,29 @@
+{
+  "name": "password_security_model_test_code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KiHyeon-Hong/Password_security_model_test_code.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KiHyeon-Hong/Password_security_model_test_code/issues"
+  },
+  "homepage": "https://github.com/KiHyeon-Hong/Password_security_model_test_code#readme",
+  "dependencies": {
+    "zxcvbn": "^4.4.2",
+    "@tensorflow/tfjs": "^3.0.0",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "decision-tree": "^0.3.7",
+    "express": "^4.17.1",
+    "inko": "^1.1.1",
+    "request": "^2.88.2"
+  }
+}
