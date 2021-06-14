@@ -7,7 +7,7 @@ const comparePoint = new koreanZxcvbnString.koreanZxcvbnString.koreanZxcvbnStrin
 const levenshteinDistance = require('./lib/levenshteinDistance.js');
 const ludsPoint = require('./lib/ludsPoint.js');
 
-var datas = fs.readFileSync('./files/LeakData.txt', 'utf8');
+var datas = fs.readFileSync(__dirname + '/./files/LeakData.txt', 'utf8');
 datas = datas.split('\n');
 
 var data = [];
@@ -44,12 +44,16 @@ for(let i = 0; i < datas.length; i++) {
     }
 }
 
+fs.writeFileSync(__dirname + '/./files/LeakPasswordFeatures.txt', '', 'utf8');
+
 for(let i = 0; i < leakDatas.length; i++) {
-    // console.log("Security Assessment Score(2p+t) : ", ((koreanZxcvbn("ghltnrnjs654321").score * 2) + comparePoint.comparePoint("ghltnrnjs654321")));
-    // console.log("LUDS requirement Score : ", ludsPoint.ludsPoint("ghltrnjs654321").nScore);
-    // console.log("LevenshteinDistence Score : ", levenshteinDistance.levenshteinDistance("ghltnrnjs", "ghltnrnjs654321"));
+    // console.log(leakDatas[i], ":", ((koreanZxcvbn(leakDatas[i]).score * 2) + comparePoint.frequencyComparePoint(leakDatas[i])), ludsPoint.ludsPoint(leakDatas[i]).nScore, levenshteinDistance.totalLVD(leakDatas[i]));
+    fs.appendFileSync(__dirname + '/./files/LeakPasswordFeatures.txt', leakDatas[i] + ',' + ((koreanZxcvbn(leakDatas[i]).score * 2) + comparePoint.frequencyComparePoint(leakDatas[i])) + ',' + ludsPoint.ludsPoint(leakDatas[i]).nScore + ',' + levenshteinDistance.totalLVD(leakDatas[i]) + ',' + leakValues[i], 'utf8');
 }
 
-console.log("Security Assessment Score(2p+t) : ", ((koreanZxcvbn("ghltnrnjs654321").score * 2) + comparePoint.comparePoint("ghltnrnjs654321")));
-console.log("LUDS requirement Score : ", ludsPoint.ludsPoint("ghltrnjs654321").nScore);
-console.log("LevenshteinDistence Score : ", levenshteinDistance.totalLVD("password123456"));
+fs.writeFileSync(__dirname + '/./files/NotLeakPasswordFeatures.txt', '', 'utf8');
+
+for(let i = 0; i < notLeakDatas.length; i++) {
+    // console.log(leakDatas[i], ":", ((koreanZxcvbn(leakDatas[i]).score * 2) + comparePoint.frequencyComparePoint(leakDatas[i])), ludsPoint.ludsPoint(leakDatas[i]).nScore, levenshteinDistance.totalLVD(leakDatas[i]));
+    fs.appendFileSync(__dirname + '/./files/NotLeakPasswordFeatures.txt', notLeakDatas[i] + ',' + ((koreanZxcvbn(notLeakDatas[i]).score * 2) + comparePoint.frequencyComparePoint(notLeakDatas[i])) + ',' + ludsPoint.ludsPoint(notLeakDatas[i]).nScore + ',' + levenshteinDistance.totalLVD(notLeakDatas[i]) + ',' + notLeakValues[i], 'utf8');
+}
