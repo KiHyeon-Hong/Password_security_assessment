@@ -1,4 +1,11 @@
 const fs = require('fs');
+const koreanZxcvbn = require('./lib/koreanBasedPassword/koreanZxcvbn');
+const zxcvbn = require('zxcvbn');
+const koreanZxcvbnString = require('./lib/koreanBasedPassword/koreanZxcvbnString');
+const comparePoint = new koreanZxcvbnString.koreanZxcvbnString.koreanZxcvbnString();
+
+const levenshteinDistance = require('./lib/levenshteinDistance.js');
+const ludsPoint = require('./lib/ludsPoint.js');
 
 var datas = fs.readFileSync('./files/LeakData.txt', 'utf8');
 datas = datas.split('\n');
@@ -37,3 +44,12 @@ for(let i = 0; i < datas.length; i++) {
     }
 }
 
+for(let i = 0; i < leakDatas.length; i++) {
+    // console.log("Security Assessment Score(2p+t) : ", ((koreanZxcvbn("ghltnrnjs654321").score * 2) + comparePoint.comparePoint("ghltnrnjs654321")));
+    // console.log("LUDS requirement Score : ", ludsPoint.ludsPoint("ghltrnjs654321").nScore);
+    // console.log("LevenshteinDistence Score : ", levenshteinDistance.levenshteinDistance("ghltnrnjs", "ghltnrnjs654321"));
+}
+
+console.log("Security Assessment Score(2p+t) : ", ((koreanZxcvbn("ghltnrnjs654321").score * 2) + comparePoint.comparePoint("ghltnrnjs654321")));
+console.log("LUDS requirement Score : ", ludsPoint.ludsPoint("ghltrnjs654321").nScore);
+console.log("LevenshteinDistence Score : ", levenshteinDistance.totalLVD("password123456"));
