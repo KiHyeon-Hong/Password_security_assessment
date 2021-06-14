@@ -93,6 +93,12 @@ var validationLabelTensor = tf.tensor(validationLabel);
 
 console.log(trainDataTensor);
 
+// const x = tf.tensor1d([1, 2, 3, 4]);
+// const indices = tf.tensor1d([1, 3, 3], 'int32');
+
+// x.gather(indices).print();
+
+
 var X = tf.input({shape: [3]});
 var h1 = tf.layers.dense({units: 3, activation:'relu'}).apply(X);
 var h2 = tf.layers.dense({units: 3, activation:'relu'}).apply(h1);
@@ -105,7 +111,7 @@ model.compile(compileParam);
 
 var history = [];
 
-var fitParam = { epochs: 100, callbacks:{
+var fitParam = { epochs: 50, callbacks:{
     onEpochEnd: function(epoch, logs) {
         console.log('epoch', epoch, logs, "RMSE -> ", Math.sqrt(logs.loss));
         history.push(logs);
@@ -115,10 +121,73 @@ var fitParam = { epochs: 100, callbacks:{
 model.fit(trainDataTensor, trainLabelTensor, fitParam).then(async function(result) {
 
     var validationResult = model.predict(validationDataTensor);
-    validationResult.print();
+    validationResult = Array.from(validationResult.dataSync())
 
-    validationResult = model.evaluate(validationDataTensor, validationLabelTensor);
-    validationResult.print();
+    var validationAnswer = Array.from(validationLabelTensor.dataSync())
+
+    var good = 0;
+    var noGood = 0;
+
+    var checkPoint = 0.5;
+
+    fs.writeFileSync('./testArray.txt', validationResult.toString(), 'utf8');
+    
+    for(let i = 0; i < validationResult.length; i++) {
+        if((validationResult[i] > checkPoint && validationAnswer[i] > checkPoint) || (validationResult[i] <= checkPoint && validationAnswer[i] <= checkPoint)) {
+            good++;
+        }
+        else {
+            noGood++;
+        }
+    }
+
+    console.log(good);
+    console.log(noGood);
+
+
+
+
+
+    // var trainResult = model.predict(trainDataTensor);
+    // trainResult = Array.from(trainResult.dataSync())
+
+    // var trainAnswer = Array.from(trainLabelTensor.dataSync())
+
+    // var good = 0;
+    // var noGood = 0;
+
+    // var checkPoint = 0.5;
+
+    // // fs.writeFileSync('./testArray.txt', validationResult.toString(), 'utf8');
+    
+    // for(let i = 0; i < trainResult.length; i++) {
+    //     if((trainResult[i] > checkPoint && trainAnswer[i] > checkPoint) || (trainResult[i] <= checkPoint && trainAnswer[i] <= checkPoint)) {
+    //         good++;
+    //     }
+    //     else {
+    //         noGood++;
+    //     }
+    // }
+
+    // console.log(good);
+    // console.log(noGood);
+
+
+
+
+
+
+
+    // validationResult.print();
+    // console.log(Array.from(validationResult.dataSync()));
+
+    // validationResult.gather(tf.tensor1d([0], 'int32')).print();
+
+
+    // fs.writeFileSync('./tensorTest.txt', validationResult.toString(), 'utf8');
+
+    // validationResult = model.evaluate(validationDataTensor, validationLabelTensor);
+    // validationResult.print();
 
     model.save("file://./myModel").then(async function() {
         console.log("Successfully saved the artifacts.");
