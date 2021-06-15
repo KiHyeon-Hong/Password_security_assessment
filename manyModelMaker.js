@@ -146,8 +146,6 @@ model.fit(trainDataTensor, trainLabelTensor, fitParam).then(async function(resul
 
 
 
-
-
     // var trainResult = model.predict(trainDataTensor);
     // trainResult = Array.from(trainResult.dataSync())
 
