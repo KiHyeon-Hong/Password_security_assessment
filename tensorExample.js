@@ -91,7 +91,7 @@ var validationLabelTensor = tf.tensor(validationLabel);
 console.log(trainDataTensor);
 
 var X = tf.input({shape: [3]});
-var h1 = tf.layers.dense({units: 3, activation:'relu'}).apply(X);
+var h1 = tf.layers.dense({units: 5, activation:'relu'}).apply(X);
 var h2 = tf.layers.dense({units: 3, activation:'relu'}).apply(h1);
 var Y = tf.layers.dense({units: 1, activation: 'sigmoid'}).apply(h2);
 
@@ -102,7 +102,7 @@ model.compile(compileParam);
 
 var history = [];
 
-var fitParam = { epochs: 50, callbacks:{
+var fitParam = { epochs: 100, callbacks:{
     onEpochEnd: function(epoch, logs) {
         console.log('epoch', epoch, logs, "RMSE -> ", Math.sqrt(logs.loss));
         history.push(logs);
@@ -119,19 +119,31 @@ model.fit(trainDataTensor, trainLabelTensor, fitParam).then(async function(resul
     var good = 0;
     var noGood = 0;
 
-    var checkPoint = 0.5;
-    
-    for(let i = 0; i < validationResult.length; i++) {
-        if((validationResult[i] > checkPoint && validationAnswer[i] > checkPoint) || (validationResult[i] <= checkPoint && validationAnswer[i] <= checkPoint)) {
-            good++;
-        }
-        else {
-            noGood++;
-        }
-    }
+    var checkPoints = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+    checkPoints = [0.6]
 
-    console.log(good);
-    console.log(noGood);
+    fs.writeFileSync('./testResult.txt', validationResult.toString(), 'utf8');
+    
+    
+    for(let checkPoint = 0; checkPoint < checkPoints.length; checkPoint++) {
+        for(let i = 0; i < validationResult.length; i++) {
+            if(((validationResult[i] > checkPoints[checkPoint]) && (validationAnswer[i] > checkPoints[checkPoint])) || ((validationResult[i] <= checkPoints[checkPoint]) && (validationAnswer[i] <= checkPoints[checkPoint]))) {
+                // console.log("good", validationResult[i], checkPoints[checkPoint], validationAnswer[i], string[i + 50000])
+                good++;
+            }
+            else {
+                // console.log("noGood", validationResult[i], checkPoints[checkPoint], validationAnswer[i], string[i + 50000])
+                noGood++;
+            }
+        }
+    
+        console.log(checkPoints[checkPoint] + " : " + good + ", " + noGood);
+    
+        good = 0;
+        noGood = 0;
+    }
+    
+
 
     model.save("file://./myModel").then(async function() {
         console.log("Successfully saved the artifacts.");
