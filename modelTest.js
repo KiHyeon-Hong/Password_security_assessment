@@ -160,70 +160,100 @@ var units = [
 ];
 var activationFuncs = ["relu"];
 
-for(let node = 0; node < nodes.length; node++) {
-    for(let unit = 0; unit < units.length; unit++) {
-        for(let activationFunc = 0; activationFunc < activationFuncs.length; activationFunc++) {
+async function main() {
 
-            var history = [];
+    fs.writeFileSync('./report.txt', '', 'utf8');
 
-            var fitParam = { epochs: 2, callbacks:{
-                onEpochEnd: function(epoch, logs) {
-                    console.log('epoch', epoch, logs, "RMSE -> ", Math.sqrt(logs.loss));
-                    history.push(logs);
+    for(let node = 0; node < nodes.length; node++) {
+        for(let unit = 0; unit < units.length; unit++) {
+            for(let activationFunc = 0; activationFunc < activationFuncs.length; activationFunc++) {
+    
+                async function run() {
+                    
+                    await new Promise((resolve) => {
+                        
+                        var history = [];
+    
+                        var fitParam = { epochs: 100, callbacks:{
+                            onEpochEnd: function(epoch, logs) {
+                                console.log('epoch', epoch, logs, "RMSE -> ", Math.sqrt(logs.loss));
+                                history.push(logs);
+                            }
+                        }};
+        
+                        console.log(nodes[node], units[unit], activationFuncs[activationFunc]);
+        
+                        var model = null;
+                        if(nodes[node] == 1) {
+                            model = modelCreateDepth1(units[unit][0], activationFuncs[activationFunc]);
+                            unit += 26;
+                            fs.appendFileSync('./report.txt', nodes[node] + ", [" + units[unit][0] + "], " + activationFuncs[activationFunc] + "\n", 'utf8');
+                        }
+                        else if(nodes[node] == 2) {
+                            model = modelCreateDepth2(units[unit][0], units[unit][1], activationFuncs[activationFunc]);
+                            unit += 8;
+                            fs.appendFileSync('./report.txt', nodes[node] + ", [" + units[unit][0] + ", " + units[unit][1] + "], " + activationFuncs[activationFunc] + "\n", 'utf8');
+                        }
+                        if(nodes[node] == 3) {
+                            model = modelCreateDepth3(units[unit][0], units[unit][1], units[unit][2], activationFuncs[activationFunc]);
+                            unit += 2;
+                            fs.appendFileSync('./report.txt', nodes[node] + ", [" + units[unit][0] + ", " + units[unit][1] + ", " + units[unit][2] + "], " + activationFuncs[activationFunc] + "\n", 'utf8');
+                        }
+                        else {
+                            model = modelCreateDepth4(units[unit][0], units[unit][1], units[unit][2], units[unit][3], activationFuncs[activationFunc]);
+                            fs.appendFileSync('./report.txt', nodes[node] + ", [" + units[unit][0] + ", " + units[unit][1] + ", " + units[unit][2] + ", " + units[unit][3] + "], " + activationFuncs[activationFunc] + "\n", 'utf8');
+                        }
+                        
+                        
+                        model.fit(trainDataTensor, trainLabelTensor, fitParam).then(async function(result) {
+
+                            for(let his = 0; his < history.length; his++) {
+                                fs.appendFileSync('./report.txt', "epoch: " + his + ", loss: " + history[his].loss + "\n", 'utf8');
+                            }
+                            
+                            var validationResult = model.predict(validationDataTensor);
+                            validationResult = Array.from(validationResult.dataSync())
+                            
+                            var validationAnswer = Array.from(validationLabelTensor.dataSync())
+                            
+                            var good = 0;
+                            var noGood = 0;
+                    
+                            var checkPoints = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+
+                            for(let checkPoint = 0; checkPoint < checkPoints.length; checkPoint++) {
+                                for(let i = 0; i < validationResult.length; i++) {
+                                    if(((validationResult[i] > checkPoints[checkPoint]) && (validationAnswer[i] > checkPoints[checkPoint])) || ((validationResult[i] <= checkPoints[checkPoint]) && (validationAnswer[i] <= checkPoints[checkPoint]))) {
+                                        good++;
+                                    }
+                                    else {
+                                        noGood++;
+                                    }
+                                }
+    
+                                console.log(checkPoints[checkPoint] + " : " + good + ", " + noGood);
+                                fs.appendFileSync('./report.txt', checkPoints[checkPoint] + " : " + good + ", " + noGood + "\n", 'utf8');
+    
+                                good = 0;
+                                noGood = 0;
+                            }
+                    
+                            model.save("file://./myModelTest").then(async function() {
+                                console.log("Successfully saved the artifacts.");
+                                fs.appendFileSync('./report.txt', "====================\n", 'utf8');
+                                resolve();
+                            });
+                        });
+
+                    })
+
                 }
-            }};
-
-            console.log(nodes[node], units[unit], activationFuncs[activationFunc]);
-
-            var model = null;
-            if(nodes[node] == 1) {
-                model = modelCreateDepth1(units[unit][0], activationFuncs[activationFunc]);
-                unit += 26;
-            }
-            else if(nodes[node] == 2) {
-                model = modelCreateDepth2(units[unit][0], units[unit][1], activationFuncs[activationFunc]);
-                unit += 8;
-            }
-            if(nodes[node] == 3) {
-                model = modelCreateDepth3(units[unit][0], units[unit][1], units[unit][2], activationFuncs[activationFunc]);
-                unit += 2;
-            }
-            else {
-                model = modelCreateDepth4(units[unit][0], units[unit][1], units[unit][2], units[unit][3], activationFuncs[activationFunc]);
-            }
-
-            
-            model.fit(trainDataTensor, trainLabelTensor, fitParam).then(async function(result) {
-            
-                var validationResult = model.predict(validationDataTensor);
-                validationResult = Array.from(validationResult.dataSync())
-            
-                var validationAnswer = Array.from(validationLabelTensor.dataSync())
-            
-                var good = 0;
-                var noGood = 0;
-            
-                var checkPoint = 0.5;
                 
-                for(let i = 0; i < validationResult.length; i++) {
-                    if((validationResult[i] > checkPoint && validationAnswer[i] > checkPoint) || (validationResult[i] <= checkPoint && validationAnswer[i] <= checkPoint)) {
-                        good++;
-                    }
-                    else {
-                        noGood++;
-                    }
-                }
-            
-                console.log(good);
-                console.log(noGood);
-            
-                model.save("file://./myModelTest").then(async function() {
-                    console.log("Successfully saved the artifacts.");
-            
-                });
-            });
-            
-
+                await run();
+            }
         }
     }
+
 }
+
+main();
