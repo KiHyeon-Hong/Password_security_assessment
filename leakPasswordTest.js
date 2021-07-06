@@ -99,9 +99,13 @@ async function passwordValidation() {
     var validationAnswer = Array.from(validationLabelTensor.dataSync());
     var validationLeak = Array.from(validationValueTensor.dataSync());
 
+    fs.writeFileSync(__dirname + '/paperFiles/validationResult.txt', '', 'utf8');
+    for(let i = 0; i < validationResult.length; i++) {
+        fs.appendFileSync(__dirname + '/paperFiles/validationResult.txt', string[i] + ',' + parseInt(feature1[i]) + ',' + parseInt(feature2[i]) + ',' + parseInt(feature3[i]) + ',' + validationLeak[i] + '\n', 'utf8');
+    }
+
 
     fs.writeFileSync(__dirname + '/paperFiles/predictResult.txt', '', 'utf8');
-
     for(let i = 0; i < validationResult.length; i++) {
         fs.appendFileSync(__dirname + '/paperFiles/predictResult.txt', string[i] + ',' + validationAnswer[i] + ',' + validationResult[i] + ',' + validationLeak[i] + '\n', 'utf8');
     }
